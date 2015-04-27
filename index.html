@@ -46,7 +46,7 @@
 
     <script type="text/html" id="type-template">
         <div class="typeinfo">
-            <img class="typeicon" data-bind="attr: { src: 'img/' + MBTI.join('') + '.png'}">
+            <img class="typeicon" data-bind="attr: { src: 'img/' + MBTI.join('').toLowerCase() + '.png'}">
             <div class="typetext">
                 <div class="mbti" data-bind="text: MBTI.join('')"></div>
                 <div class="socionics" data-bind="text: Socionics.join('') + ' / ' + $root.toSocionics(MBTI)"></div>
