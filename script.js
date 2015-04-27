@@ -116,25 +116,6 @@ function ViewModel() {
         },
     ];
 
-    self.relationships = [
-        [[[{ name: "Duality",        desc: function(from, to) { return "A relationship characterized by mutual benefit and support, viewed as optimal for friendship, intimacy, and marriage."; } },
-           { name: "Conflict",       desc: function(from, to) { return "A relationship characterized by constantly escalating conflict. They rarely understand anything regarding each other's motivations or lifestyles."; } }],
-          [{ name: "Semi-duality",   desc: function(from, to) { return "A relationship characterized by mutual interest but also misunderstanding, leading to cycles of establishing and losing harmony."; } },
-           { name: "Supervisee",     desc: function(from, to) { return "A relationship characterized by the " + to + " feeling controlled and criticized by the " + from + ", who is often dissatisfied with the actions of the " + to + "."; } }]],
-         [[{ name: "Mirage",         desc: function(from, to) { return "A relationship characterized by easy initial attraction that often becomes quite close."; } },
-           { name: "Supervisor",     desc: function(from, to) { return "A relationship characterized by the " + from + " feeling controlled and criticized by the " + to + ", who is often dissatisfied with the actions of the " + from + "."; } }],
-          [{ name: "Contrary",       desc: function(from, to) { return "A relationship characterized by similar lifestyles but differing thought processes that works well one-on-one, but is easily unbalanced when not alone."; } },
-           { name: "Mirror",         desc: function(from, to) { return "A relationship characterized by similar actions and motivations between partners, and mutual understanding."; } }]]],
-        [[[{ name: "Activation",     desc: function(from, to) { return "A relationship characterized by easy communication but different world views and goals. A common relationship for friendship."; } },
-           { name: "Super-ego",      desc: function(from, to) { return "A relationship characterized by differing values, discomfort, and mutual misunderstanding."; } }],
-          [{ name: "Benefactor",     desc: function(from, to) { return "A relationship characterized by the " + from + " looking up to and trying to prove themself to the " + to + ", who does not find the " + from + " a very interesting person."; } },
-           { name: "Business",       desc: function(from, to) { return "A relationship characterized by a formal and business-like conduct to avoid conflict caused by differing internal motivations."; } }]],
-         [[{ name: "Beneficiary",    desc: function(from, to) { return "A relationship characterized by the " + to + " looking up to and trying to prove themself to the " + from + ", who does not find the " + to + " a very interesting person."; } },
-           { name: "Kindred",        desc: function(from, to) { return "A relationship characterized by a high degree of similarity, though in the long term this may lead to competition or boredom."; } }],
-          [{ name: "Quasi-identity", desc: function(from, to) { return "A relationship characterized by mutual misunderstanding. They have similar interests, but will rarely understand each other's motivations or ideas."; } },
-           { name: "Identity",       desc: function(from, to) { return "A relationship characterized by mutual understanding, self-development, and learning. Each is interested in the other's ideas, and sees their value."; } }]]]
-    ];
-
     self.activeType = ko.observable();
 
     self.columns = {
@@ -173,14 +154,40 @@ function ViewModel() {
             return "&nbsp;";
         }
 
-        var eq = self.mbtiEquality(type, self.activeType());
-        
-        var relationship = self.relationships[+eq[0]][+eq[1]][+eq[2]][+eq[3]];
-        return { name: relationship.name, desc: relationship.desc(self.activeType().MBTI.join(''), type.MBTI.join('')) };
+        return self.relationBetween(self.activeType(), type);
     }
 
-    self.mbtiEquality = function(type1, type2) {
-        return _.map([0,1,2,3], function(i) { return type1.MBTI[i] == type2.MBTI[i]; });
+    self.relationBetween = function(type1, type2) {
+        var rel = self.jungRelation(type1, type2);
+        
+        var relationship = _.isEqual(rel, [ 1,  2]) ? { name: "Identity",       desc: function(from, to) { return "A relationship characterized by mutual understanding, self-development, and learning. Each is interested in the other's ideas, and sees their value."; } } :
+                           _.isEqual(rel, [ 2,  1]) ? { name: "Mirror",         desc: function(from, to) { return "A relationship characterized by similar actions and motivations between partners, and mutual understanding."; } } :
+                           _.isEqual(rel, [ 3,  4]) ? { name: "Activation",     desc: function(from, to) { return "A relationship characterized by easy communication but different world views and goals. A common relationship for friendship."; } } :
+                           _.isEqual(rel, [ 4,  3]) ? { name: "Duality",        desc: function(from, to) { return "A relationship characterized by mutual benefit and support, viewed as optimal for friendship, intimacy, and marriage."; } } :
+
+                           _.isEqual(rel, [-1, -2]) ? { name: "Contrary",       desc: function(from, to) { return "A relationship characterized by similar lifestyles but differing thought processes that works well one-on-one, but is easily unbalanced when not alone."; } } :
+                           _.isEqual(rel, [-2, -1]) ? { name: "Quasi-identity", desc: function(from, to) { return "A relationship characterized by mutual misunderstanding. They have similar interests, but will rarely understand each other's motivations or ideas."; } } :
+                           _.isEqual(rel, [-3, -4]) ? { name: "Conflict",       desc: function(from, to) { return "A relationship characterized by constantly escalating conflict. They rarely understand anything regarding each other's motivations or lifestyles."; } } :
+                           _.isEqual(rel, [-4, -3]) ? { name: "Super-ego",      desc: function(from, to) { return "A relationship characterized by differing values, discomfort, and mutual misunderstanding."; } } :
+                           
+                           _.isEqual(rel, [-1,  3]) ? { name: "Mirage",         desc: function(from, to) { return "A relationship characterized by easy initial attraction that often becomes quite close."; } } :
+                           _.isEqual(rel, [ 1, -3]) ? { name: "Kindred",        desc: function(from, to) { return "A relationship characterized by a high degree of similarity, though in the long term this may lead to competition or boredom."; } } :
+                           _.isEqual(rel, [-4,  2]) ? { name: "Business",       desc: function(from, to) { return "A relationship characterized by a formal and business-like conduct to avoid conflict caused by differing internal motivations."; } } :
+                           _.isEqual(rel, [ 4, -2]) ? { name: "Semi-duality",   desc: function(from, to) { return "A relationship characterized by mutual interest but also misunderstanding, leading to cycles of establishing and losing harmony."; } } :
+
+                           _.isEqual(rel, [-3,  1]) ? { name: "Supervisee",     desc: function(from, to) { return "A relationship characterized by the " + to + " feeling controlled and criticized by the " + from + ", who is often dissatisfied with the actions of the " + to + "."; } } :
+                           _.isEqual(rel, [ 3, -1]) ? { name: "Benefactor",     desc: function(from, to) { return "A relationship characterized by the " + from + " looking up to and trying to prove themself to the " + to + ", who does not find the " + from + " a very interesting person."; } } :
+                           _.isEqual(rel, [ 2, -4]) ? { name: "Supervisor",     desc: function(from, to) { return "A relationship characterized by the " + from + " feeling controlled and criticized by the " + to + ", who is often dissatisfied with the actions of the " + from + "."; } } :
+                                                      { name: "Beneficiary",    desc: function(from, to) { return "A relationship characterized by the " + to + " looking up to and trying to prove themself to the " + from + ", who does not find the " + to + " a very interesting person."; } };
+
+        return { name: relationship.name, desc: relationship.desc(type1.MBTI.join(''), type2.MBTI.join('')) };
+    };
+
+    self.jungRelation = function(type1, type2) {
+        return _.map([0,1], function(i) {
+            var j = _.findIndex(type2.Jung, function(f2) { return f2[0] == type1.Jung[i][0]; });
+            return (j + 1) * (type2.Jung[j][1] == type1.Jung[i][1] ? 1 : -1);
+        });
     }
 }
 
