@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> 
+    <title>Type Square</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="grid">
+        <!-- ko foreach: [true, false] -->
+        <div class="maincolumn">
+            <div class="mainlabel" data-bind="text: $root.columns.main[$data ? 'left' : 'right']"></div>
+            <div class="subcolumns" data-bind="foreach: ['left', 'right']">
+                <div class="subcolumn" data-bind="text: $root.columns[$parent ? 'sub1' : 'sub2'][$data]"></div>
+            </div>
+            <!-- ko foreach: [true, false] -->
+            <div class="typequadrant" data-bind="foreach: [true, false]">
+                <div class="typerow" data-bind="foreach: [true, false]">
+                    <div class="type" data-bind="
+                        template: {
+                            name: 'type-template',
+                            data: $root.find($parents[2], $data, $parents[1], $parent)
+                        },
+                        event: {
+                            mouseover: function() { $root.activeType($root.find($parents[2], $data, $parents[1], $parent)); },
+                            mouseout:  function() { $root.activeType(undefined); }
+                        }"></div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <div class="labelcolumn" data-bind="foreach: [true, false]">
+            <div class="mainrow">
+                <div class="subrowcolumn" data-bind="foreach: [true, false]">
+                    <div class="subrow">
+                        <div class="subrowlabel" data-bind="text: $root.rows[$parent ? 'sub1' : 'sub2'][$data ? 'left' : 'right']"></div>    
+                    </div>
+                </div>
+                <div class="mainrowcolumn">
+                    <div class="mainrowlabel" data-bind="text: $root.rows.main[$data ? 'left' : 'right']"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/html" id="type-template">
+        <div class="typeinfo">
+            <img class="typeicon" data-bind="attr: { src: 'img/' + MBTI.join('') + '.png'}">
+            <div class="typetext">
+                <div class="mbti" data-bind="text: MBTI.join('')"></div>
+                <div class="socionics" data-bind="text: Socionics.join('') + ' / ' + $root.toSocionics(MBTI)"></div>
+                <div class="keirsey" data-bind="text: Keirsey"></div>
+            </div>
+        </div>
+        <div class="functionGraph" data-bind="visible: !$root.activeType()">
+            <div class="pierce" data-bind="html: '&ldquo;' + Pierce + '&rdquo;' ">Function stack</div>
+            <div data-bind="foreach: ['i', 'e']">
+                <div data-bind="attr: { class: 'graphColumn ' + $data }, foreach: [0, 1, 2, 3]">
+                    <div data-bind="text: $parents[1].Jung[$data],
+                                    attr: { class: 'function f' + ($data + 1) +  ' function' + $parents[1].Jung[$data][0] },
+                                    style: { opacity: +($parents[1].Jung[$data][1] == $parent) }"></div>
+                </div>
+            </div>
+        </div>
+        <div class="relationinfo" data-bind="visible: $root.activeType()">
+            <div class="relationname" data-bind="html: $root.relation($data).name"></div>
+            <div class="relationdesc" data-bind="html: $root.relation($data).desc"></div>
+        </div>
+    </script>
+
+    <script type="text/javascript" src="knockout-3.3.0.js"></script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>

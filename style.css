@@ -1,0 +1,240 @@
+@font-face {
+  font-family: 'PT Sans';
+  src: url('font/PT_Sans-Web-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: italic;
+  src: url('font/PT_Sans-Web-Italic.ttf');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-weight: bold;
+  src: url('font/PT_Sans-Web-Bold.ttf');
+}
+
+body {
+    font-family: 'PT Sans', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.grid {
+    background-color: gray;
+    font-size: 0;
+    border: 2px solid black;
+    white-space: nowrap;
+    display: inline-block;
+    margin: 10px;
+}
+
+.maincolumn {
+    background-color: #ccc;
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+    border-right: 2px solid black;
+    vertical-align: bottom;
+}
+
+.subcolumns {
+    font-size: 0;
+    border-bottom: 2px solid black;
+}
+
+.subcolumn {
+    width: 50%;
+    display: inline-block;
+    font-size: 18px;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.labelcolumn {
+    display: inline-block;
+    vertical-align: bottom;
+    background-color: #ccc;
+}
+
+.subrowcolumn {
+    display: inline-block;
+    font-size: 18px;
+}
+
+.mainrow {
+    border-top: 2px solid black;
+}
+
+.mainrowcolumn {
+    display: inline-block;
+    font-size: 24px;
+    vertical-align: top;
+}
+
+.mainrowlabel {
+    line-height: 400px;
+    margin: 0 10px;
+}
+
+.subrowlabel {
+    border: 1px solid transparent;
+    margin: 0 5px;
+    white-space: normal;
+    max-width: 60px;
+    text-align: center;
+    height: 125px;
+    padding-top: 75px;
+}
+
+.typequadrant:last-child {
+    border-top: 2px solid black;
+}
+
+.typerow {
+    font-size: 0;
+}
+
+.type {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    border: 1px solid #ccc;
+}
+
+.type:hover {
+    cursor: pointer;
+    background-color: #fbfce1;
+}
+
+.mainlabel {
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.typeinfo {
+    font-size: 0;
+    margin-top: 15px;
+}
+
+.typeicon {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    vertical-align: middle;
+    margin: 0 5px 0 0px;
+}
+
+.typetext {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 18px;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.mbti {
+    margin-left: -1px;
+    font-size: 28px;
+    line-height: 28px;
+    font-weight: bold;
+}
+
+/*.type:hover .mbti {
+    color: #4091fc;
+}*/
+
+.keirsey {
+    font-style: italic;
+    color: #808080;
+    min-width: 85px;
+}
+
+.functionGraph {
+    font-size: 0;
+    margin-top: 3px;
+}
+
+.pierce {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.graphColumn {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: top;
+}
+
+.graphColumn.i {
+    margin-right: -1px;
+}
+
+.function {
+    display: block;
+    height: 18px;
+    line-height: 18px;
+    border: 1px solid black;
+    margin-bottom: -1px;
+}
+
+.graphColumn.i .function {
+    float: right;
+    clear: right;
+}
+
+.function.f1 {
+    width: 85px;
+}
+
+.function.f2 {
+    width: 65px;
+}
+
+.function.f3 {
+    width: 45px;
+}
+
+.function.f4 {
+    width: 25px;
+}
+
+.functionN {
+    background-color: #faed6b;
+}
+
+.functionS {
+    background-color: #82db7f;
+}
+
+.functionT {
+    background-color: #85aeed;
+}
+
+.functionF {
+    background-color: #e87762;
+}
+
+.relationinfo {
+    margin-top: 12px;
+}
+
+.relationname {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.relationdesc {
+    font-size: 12px;
+    line-height: 15px;
+    white-space: normal;
+    color: #808080;
+    max-width: 165px;
+    margin: auto;
+}
